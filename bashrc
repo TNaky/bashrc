@@ -80,12 +80,7 @@ if [ "$color_prompt" = yes ]; then
   GIT_COLOR='\[\033[00;36m\]'
   RESET_COLOR='\[\033[00m\]'
 
-  # If root user
-  if [ "$UID" -eq "0" ]; then
-    export PS1='${debian_chroot:+($debian_chroot)}'"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}${GIT_COLOR}"' $(git_branch)'"${RESET_COLOR}"'\n# '
-  else
-    export PS1='${debian_chroot:+($debian_chroot)}'"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}${GIT_COLOR}"' $(git_branch)'"${RESET_COLOR}"'\n\$ '
-  fi
+  export PS1='${debian_chroot:+($debian_chroot)}[\t] '"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}${GIT_COLOR}"' $(git_branch)'"${RESET_COLOR}"'\n\$ '
   # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
