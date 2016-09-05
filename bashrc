@@ -2,21 +2,36 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-function git_branch() {
-  local bName=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'`
+# Show the git status
+function git_status() {
+
+  local BRANCH_NAME_COLOR='\033[00;36m'
+  local RESET_COLOR='\033[00m'
+  local bName=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
   if [ "${bName}" = "" ]; then
     echo ''
   else
-    local gAdd="`git status --porcelain 2> /dev/null | sed -e '/^[^ ]/d'`"
-    local gCom="`git status --porcelain 2> /dev/null | sed -e '/^[^M]/d'`"
-    gStat=""
-    if [ ! "${gAdd}" = "" ]; then
-      gStat=${gStat}'+'
+    local ADD_STATUS_COLOR='\033[01;31m'
+    local COM_STATUS_COLOR='\033[01;32m'
+    local NEW_STATUS_COLOR='\033[01;35m'
+    local RESET_COLOR='\033[00m'
+    local gAddNum="`git status --porcelain 2> /dev/null | sed -e '/^[^ ]/d' | wc -l`"
+    local gComNum="`git status --porcelain 2> /dev/null | sed -e '/^[^M]/d' | wc -l`"
+    local gNewNum="`git status --porcelain 2> /dev/null | sed -e '/^[^?]/d' | wc -l`"
+
+    if [ ${gAddNum} -gt 0 ]; then
+      local gAdd=' +:'${gAddNum}
     fi
-    if [ ! "${gCom}" = "" ]; then
-      gStat=${gStat}'*'
+
+    if [ ${gComNum} -gt 0 ]; then
+      local gCom=' *:'${gComNum}
     fi
-    echo ${bName}${gStat}
+
+    if [ ${gNewNum} -gt 0 ]; then
+      local gNew=' !:'${gNewNum}
+    fi
+
+    echo -e ' ('${BRANCH_NAME_COLOR}${bName}${ADD_STATUS_COLOR}${gAdd}${COM_STATUS_COLOR}${gCom}${NEW_STATUS_COLOR}${gNew}${RESET_COLOR}')'
   fi
 }
 
@@ -80,7 +95,8 @@ if [ "$color_prompt" = yes ]; then
   GIT_COLOR='\[\033[00;36m\]'
   RESET_COLOR='\[\033[00m\]'
 
-  export PS1='${debian_chroot:+($debian_chroot)}[\t] '"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}${GIT_COLOR}"' $(git_branch)'"${RESET_COLOR}"'\n\$ '
+  # export PS1='\n${debian_chroot:+($debian_chroot)}[\t] ${USER_COLOR}\u${RESET_COLOR} at ${HOST_COLOR}\h${RESET_COLOR} in ${PWD_COLOR}\w${RESET_COLOR}$(git_branch)$(git_status)${RESET_COLOR}\n\$ '
+  export PS1='\n${debian_chroot:+($debian_chroot)}[\t] '"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}"'$(git_status)'"${RESET_COLOR}"'\n\$ '
   # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
