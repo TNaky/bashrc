@@ -11,22 +11,20 @@ function git_status() {
   if [ "${bName}" = "" ]; then
     echo ''
   else
-    local ADD_STATUS_COLOR='\033[01;31m'
+    local ADD_STATUS_COLOR='\033[01;33m'
     local COM_STATUS_COLOR='\033[01;32m'
     local NEW_STATUS_COLOR='\033[01;35m'
     local RESET_COLOR='\033[00m'
-    local gAddNum="`git status --porcelain 2> /dev/null | sed -e '/^[^ ]/d' | wc -l`"
+    local gAddNum="`git status --porcelain 2> /dev/null | sed -e '/^[^ ][^M]/d' | wc -l`"
     local gComNum="`git status --porcelain 2> /dev/null | sed -e '/^[^M]/d' | wc -l`"
     local gNewNum="`git status --porcelain 2> /dev/null | sed -e '/^[^?]/d' | wc -l`"
 
     if [ ${gAddNum} -gt 0 ]; then
       local gAdd=' +:'${gAddNum}
     fi
-
     if [ ${gComNum} -gt 0 ]; then
       local gCom=' *:'${gComNum}
     fi
-
     if [ ${gNewNum} -gt 0 ]; then
       local gNew=' !:'${gNewNum}
     fi
