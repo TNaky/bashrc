@@ -2,6 +2,24 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+function git_branch() {
+  local bName=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'`
+  if [ "${bName}" = "" ]; then
+    echo ''
+  else
+    local gAdd="`git status --porcelain 2> /dev/null | sed -e '/^[^ ]/d'`"
+    local gCom="`git status --porcelain 2> /dev/null | sed -e '/^[^M]/d'`"
+    gStat=""
+    if [ ! "${gAdd}" = "" ]; then
+      gStat=${gStat}'+'
+    fi
+    if [ ! "${gCom}" = "" ]; then
+      gStat=${gStat}'*'
+    fi
+    echo ${bName}${gStat}
+  fi
+}
+
 # If not running interactively, don't do anything
 case $- in
   *i*) ;;
@@ -46,8 +64,7 @@ esac
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then # We have color support; assume it's compliant with Ecma-48
     # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
     # a case would tend to support setf rather than setaf.)
     color_prompt=yes
@@ -60,13 +77,14 @@ if [ "$color_prompt" = yes ]; then
   USER_COLOR='\[\033[00;35m\]'
   HOST_COLOR='\[\033[00;33m\]'
   PWD_COLOR='\[\033[00;32m\]'
+  GIT_COLOR='\[\033[00;36m\]'
   RESET_COLOR='\[\033[00m\]'
 
   # If root user
   if [ "$UID" -eq "0" ]; then
-    PS1="${debian_chroot:+($debian_chroot)}${USER_COLOR}\u${RESET_COLOR} at ${HOST_COLOR}\h${RESET_COLOR} in ${PWD_COLOR}\w${RESET_COLOR}\n# "
+    export PS1='${debian_chroot:+($debian_chroot)}'"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}${GIT_COLOR}"' $(git_branch)'"${RESET_COLOR}"'\n# '
   else
-    PS1="${debian_chroot:+($debian_chroot)}${USER_COLOR}\u${RESET_COLOR} at ${HOST_COLOR}\h${RESET_COLOR} in ${PWD_COLOR}\w${RESET_COLOR}\n\$ "
+    export PS1='${debian_chroot:+($debian_chroot)}'"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}${GIT_COLOR}"' $(git_branch)'"${RESET_COLOR}"'\n\$ '
   fi
   # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
