@@ -15,8 +15,8 @@ function git_status() {
     local readonly ADD_STATUS_COLOR='\033[01;33m'
     local readonly NEW_STATUS_COLOR='\033[01;35m'
     local readonly RESET='\033[00m'
-    local gAddNum="`git status --porcelain 2> /dev/null | grep '^ M' | wc -l`"
-    local gDelNum="`git status --porcelain 2> /dev/null | grep '^ D' | wc -l`"
+    local gAddNum="`git status --porcelain 2> /dev/null | grep '^[AD ]M' | wc -l`"
+    local gDelNum="`git status --porcelain 2> /dev/null | grep '^[MA ]D' | wc -l`"
     local gComNum="`git status --porcelain 2> /dev/null | grep '^[MAD]' | wc -l`"
     local gNewNum="`git status --porcelain 2> /dev/null | grep '^??' | wc -l`"
 
