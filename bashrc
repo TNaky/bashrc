@@ -13,14 +13,11 @@ function git_status() {
     local readonly DEL_STATUS_COLOR='\033[01;31m'
     local readonly COM_STATUS_COLOR='\033[01;32m'
     local readonly ADD_STATUS_COLOR='\033[01;33m'
-    local readonly EW_STATUS_COLOR='\033[01;35m'
+    local readonly NEW_STATUS_COLOR='\033[01;35m'
     local readonly RESET='\033[00m'
     local gAddNum="`git status --porcelain 2> /dev/null | grep '^ M' | wc -l`"
     local gDelNum="`git status --porcelain 2> /dev/null | grep '^ D' | wc -l`"
-    local gComNum="`git status --porcelain 2> /dev/null | grep '^M ' | wc -l`"
-    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^A ' | wc -l)`
-    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^D ' | wc -l)`
-    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^AD' | wc -l)`
+    local gComNum="`git status --porcelain 2> /dev/null | grep '^[MAD]' | wc -l`"
     local gNewNum="`git status --porcelain 2> /dev/null | grep '^??' | wc -l`"
 
     local stat=${BRANCH_NAME_COLOR}${bName}
