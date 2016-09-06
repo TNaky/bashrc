@@ -11,17 +11,23 @@ function git_status() {
   if [ "${bName}" = "" ]; then
     echo ''
   else
-    local ADD_STATUS_COLOR='\033[01;33m'
+    local DEL_STATUS_COLOR='\033[01;31m'
     local COM_STATUS_COLOR='\033[01;32m'
+    local ADD_STATUS_COLOR='\033[01;33m'
     local NEW_STATUS_COLOR='\033[01;35m'
     local RESET_COLOR='\033[00m'
-    local gAddNum="`git status --porcelain 2> /dev/null | sed -e '/^[^ ][^M]/d' | wc -l`"
-    local gComNum="`git status --porcelain 2> /dev/null | sed -e '/^[^M]/d' | wc -l`"
-    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | sed -e '/^[^A]/d' | wc -l)`
-    local gNewNum="`git status --porcelain 2> /dev/null | sed -e '/^[^?]/d' | wc -l`"
+    local gAddNum="`git status --porcelain 2> /dev/null | grep '^ M' | wc -l`"
+    local gDelNum="`git status --porcelain 2> /dev/null | grep '^ D' | wc -l`"
+    local gComNum="`git status --porcelain 2> /dev/null | grep '^M ' | wc -l`"
+    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^A ' | wc -l)`
+    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^D ' | wc -l)`
+    local gNewNum="`git status --porcelain 2> /dev/null | grep '^??' | wc -l`"
 
     if [ ${gAddNum} -gt 0 ]; then
       local gAdd=' +:'${gAddNum}
+    fi
+    if [ ${gDelNum} -gt 0 ]; then
+      local gDel=' -:'${gDelNum}
     fi
     if [ ${gComNum} -gt 0 ]; then
       local gCom=' *:'${gComNum}
@@ -30,7 +36,7 @@ function git_status() {
       local gNew=' !:'${gNewNum}
     fi
 
-    echo -e ' ('${BRANCH_NAME_COLOR}${bName}${ADD_STATUS_COLOR}${gAdd}${COM_STATUS_COLOR}${gCom}${NEW_STATUS_COLOR}${gNew}${RESET_COLOR}')'
+    echo -e ' ('${BRANCH_NAME_COLOR}${bName}${ADD_STATUS_COLOR}${gAdd}${DEL_STATUS_COLOR}${gDel}${COM_STATUS_COLOR}${gCom}${NEW_STATUS_COLOR}${gNew}${RESET_COLOR}')'
   fi
 }
 
