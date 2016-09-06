@@ -17,6 +17,7 @@ function git_status() {
     local RESET_COLOR='\033[00m'
     local gAddNum="`git status --porcelain 2> /dev/null | sed -e '/^[^ ][^M]/d' | wc -l`"
     local gComNum="`git status --porcelain 2> /dev/null | sed -e '/^[^M]/d' | wc -l`"
+    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | sed -e '/^[^A]/d' | wc -l)`
     local gNewNum="`git status --porcelain 2> /dev/null | sed -e '/^[^?]/d' | wc -l`"
 
     if [ ${gAddNum} -gt 0 ]; then
