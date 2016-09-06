@@ -5,38 +5,40 @@
 # Show the git status
 function git_status() {
 
-  local BRANCH_NAME_COLOR='\033[00;36m'
-  local RESET_COLOR='\033[00m'
+  local readonly BRANCH_NAME_COLOR='\033[00;36m'
+  local readonly RESET_COLOR='\033[00m'
   local bName=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
   if [ "${bName}" = "" ]; then
     echo ''
   else
-    local DEL_STATUS_COLOR='\033[01;31m'
-    local COM_STATUS_COLOR='\033[01;32m'
-    local ADD_STATUS_COLOR='\033[01;33m'
-    local NEW_STATUS_COLOR='\033[01;35m'
-    local RESET_COLOR='\033[00m'
-    local gAddNum="`git status --porcelain 2> /dev/null | grep '^ M' | wc -l`"
-    local gDelNum="`git status --porcelain 2> /dev/null | grep '^ D' | wc -l`"
-    local gComNum="`git status --porcelain 2> /dev/null | grep '^M ' | wc -l`"
-    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^A ' | wc -l)`
-    local gComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^D ' | wc -l)`
-    local gNewNum="`git status --porcelain 2> /dev/null | grep '^??' | wc -l`"
+    local readonly DEL_STATUS_COLOR='\033[01;31m'
+    local readonly COM_STATUS_COLOR='\033[01;32m'
+    local readonly ADD_STATUS_COLOR='\033[01;33m'
+    local readonly EW_STATUS_COLOR='\033[01;35m'
+    local readonly ESET_COLOR='\033[00m'
+    local AddNum="`git status --porcelain 2> /dev/null | grep '^ M' | wc -l`"
+    local DelNum="`git status --porcelain 2> /dev/null | grep '^ D' | wc -l`"
+    local ComNum="`git status --porcelain 2> /dev/null | grep '^M ' | wc -l`"
+    local ComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^A ' | wc -l)`
+    local ComNum=`expr ${gComNum} + $(git status --porcelain 2> /dev/null | grep '^D ' | wc -l)`
+    local NewNum="`git status --porcelain 2> /dev/null | grep '^??' | wc -l`"
 
+    local stat=${BRANCH_NAME_COLOR}${bName}
     if [ ${gAddNum} -gt 0 ]; then
-      local gAdd=' +:'${gAddNum}
+      stat=${stat}${ADD_STATUS_COLOR}' +:'${gAddNum}
     fi
     if [ ${gDelNum} -gt 0 ]; then
-      local gDel=' -:'${gDelNum}
+      stat=${stat}${DEL_STATUS_COLOR}' -:'${gDelNum}
     fi
     if [ ${gComNum} -gt 0 ]; then
-      local gCom=' *:'${gComNum}
+      stat=${stat}${COM_STATUS_COLOR}' *:'${gComNum}
     fi
     if [ ${gNewNum} -gt 0 ]; then
-      local gNew=' !:'${gNewNum}
+      stat=${stat}${NEW_STATUS_COLOR}' !:'${gNewNum}
     fi
+    stat=${stat}${RESET_COLOR}
 
-    echo -e ' ('${BRANCH_NAME_COLOR}${bName}${ADD_STATUS_COLOR}${gAdd}${DEL_STATUS_COLOR}${gDel}${COM_STATUS_COLOR}${gCom}${NEW_STATUS_COLOR}${gNew}${RESET_COLOR}')'
+    echo -e ' ('${stat}')'
   fi
 }
 
@@ -94,15 +96,13 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-  USER_COLOR='\[\033[00;35m\]'
-  HOST_COLOR='\[\033[00;33m\]'
-  PWD_COLOR='\[\033[00;32m\]'
-  GIT_COLOR='\[\033[00;36m\]'
-  RESET_COLOR='\[\033[00m\]'
+  readonly USER_COLOR='\[\033[00;35m\]'
+  readonly HOST_COLOR='\[\033[00;33m\]'
+  readonly PWD_COLOR='\[\033[00;32m\]'
+  readonly GIT_COLOR='\[\033[00;36m\]'
+  readonly RESET_COLOR='\[\033[00m\]'
 
-  # export PS1='\n${debian_chroot:+($debian_chroot)}[\t] ${USER_COLOR}\u${RESET_COLOR} at ${HOST_COLOR}\h${RESET_COLOR} in ${PWD_COLOR}\w${RESET_COLOR}$(git_branch)$(git_status)${RESET_COLOR}\n\$ '
   export PS1='\n${debian_chroot:+($debian_chroot)}[\t] '"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}"'$(git_status)'"${RESET_COLOR}"'\n\$ '
-  # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
