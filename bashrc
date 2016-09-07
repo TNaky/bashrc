@@ -5,16 +5,16 @@
 # Show the git status
 function git_status() {
 
-  local readonly BRANCH_NAME_COLOR='\033[00;36m'
+  local BRANCH_NAME_COLOR='\033[00;36m'
   local bName=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
   if [ "${bName}" = "" ]; then
     echo ''
   else
-    local readonly DEL_STATUS_COLOR='\033[01;31m'
-    local readonly COM_STATUS_COLOR='\033[01;32m'
-    local readonly ADD_STATUS_COLOR='\033[01;33m'
-    local readonly NEW_STATUS_COLOR='\033[01;35m'
-    local readonly RESET='\033[00m'
+    local DEL_STATUS_COLOR='\033[01;31m'
+    local COM_STATUS_COLOR='\033[01;32m'
+    local ADD_STATUS_COLOR='\033[01;33m'
+    local NEW_STATUS_COLOR='\033[01;35m'
+    local RESET='\033[00m'
     local gAddNum="`git status --porcelain 2> /dev/null | grep '^[AD ]M' | wc -l`"
     local gDelNum="`git status --porcelain 2> /dev/null | grep '^[MA ]D' | wc -l`"
     local gComNum="`git status --porcelain 2> /dev/null | grep '^[MAD]' | wc -l`"
@@ -93,11 +93,11 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-  readonly USER_COLOR='\[\033[00;35m\]'
-  readonly HOST_COLOR='\[\033[00;33m\]'
-  readonly PWD_COLOR='\[\033[00;32m\]'
-  readonly GIT_COLOR='\[\033[00;36m\]'
-  readonly RESET_COLOR='\[\033[00m\]'
+  USER_COLOR='\[\033[00;35m\]'
+  HOST_COLOR='\[\033[00;33m\]'
+  PWD_COLOR='\[\033[00;32m\]'
+  GIT_COLOR='\[\033[00;36m\]'
+  RESET_COLOR='\[\033[00m\]'
 
   export PS1='\n${debian_chroot:+($debian_chroot)}[\t] '"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}"'$(git_status)'"${RESET_COLOR}"'\n\$ '
 else
@@ -113,6 +113,11 @@ case "$TERM" in
   *)
     ;;
 esac
+
+if [ "$(uname)" == 'Darwin' ]; then
+  export LSCOLORS=gxfxcxdxbxegedabagacad
+  # export LSCOLORS=xbfxcxdxbxegedabagacad
+fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
