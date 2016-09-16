@@ -99,7 +99,15 @@ if [ "$color_prompt" = yes ]; then
   GIT_COLOR='\[\033[00;36m\]'
   RESET_COLOR='\[\033[00m\]'
 
-  export PS1='\n${debian_chroot:+($debian_chroot)}[\t] '"${USER_COLOR}"'\u'"${RESET_COLOR}"' at '"${HOST_COLOR}"'\h'"${RESET_COLOR}"' in '"${PWD_COLOR}"'\w'"${RESET_COLOR}"'$(git_status)'"${RESET_COLOR}"'\n\$ '
+  ps=${ps}'\n${debian_chroot:+($debian_chroot)}[\t] '
+  ps=${ps}"${USER_COLOR}"'\u'
+  ps=${ps}"${RESET_COLOR}"' at '
+  ps=${ps}"${HOST_COLOR}"'\h'
+  ps=${ps}"${RESET_COLOR}"' in '
+  ps=${ps}"${PWD_COLOR}"'\w'
+  ps=${ps}"${RESET_COLOR}"'$(git_status)'
+  ps=${ps}"${RESET_COLOR}"
+  export PS1=${ps}'\n\$ '
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
