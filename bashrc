@@ -99,6 +99,7 @@ if [ "$color_prompt" = yes ]; then
   GIT_COLOR='\[\033[00;36m\]'
   RESET_COLOR='\[\033[00m\]'
 
+  ps=''
   ps=${ps}'\n${debian_chroot:+($debian_chroot)}[\t] '
   ps=${ps}"${USER_COLOR}"'\u'
   ps=${ps}"${RESET_COLOR}"' at '
