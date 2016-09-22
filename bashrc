@@ -7,7 +7,7 @@ function git_status() {
 
   if [ ! -e './.git' ]; then
     echo ''
-  else
+  elif type git > /dev/null 2>&1 ; then
     # Colors
     local readonly BRANCH_NAME_COLOR='\033[00;36m'
     local readonly ADD_STATUS_COLOR='\033[01;33m'
