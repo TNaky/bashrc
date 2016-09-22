@@ -5,34 +5,34 @@
 # Show the git status
 function git_status() {
 
-  local BRANCH_NAME_COLOR='\033[00;36m'
-  local bName=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-  if [ "${bName}" = "" ]; then
+  local readonly BRANCH_NAME_COLOR='\033[00;36m'
+  local readonly BRANCH_NAME=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+  if [ "${BRANCH_NAME}" = "" ]; then
     echo ''
   else
+    local readonly ADD_STATUS_COLOR='\033[01;33m'
     local readonly DEL_STATUS_COLOR='\033[01;31m'
     local readonly COM_STATUS_COLOR='\033[01;32m'
-    local readonly ADD_STATUS_COLOR='\033[01;33m'
     local readonly NEW_STATUS_COLOR='\033[01;35m'
     local readonly RESET='\033[00m'
-    local readonly git_stat=`git status --porcelain 2> /dev/null`
-    local gAddNum="`echo "${git_stat}" | grep '^[AD ]M' | wc -l`"
-    local gDelNum="`echo "${git_stat}" | grep '^[MA ]D' | wc -l`"
-    local gComNum="`echo "${git_stat}" | grep '^[MAD]' | wc -l`"
-    local gNewNum="`echo "${git_stat}" | grep '^??' | wc -l`"
+    local readonly GIT_STATUS=`git status --porcelain 2> /dev/null`
+    local readonly GIT_ADD_WAITS="`echo "${GIT_STATUS}" | grep '^[AD ]M' | wc -l`"
+    local readonly GIT_DEL_WAITS="`echo "${GIT_STATUS}" | grep '^[MA ]D' | wc -l`"
+    local readonly GIT_COM_WAITS="`echo "${GIT_STATUS}" | grep '^[MAD]' | wc -l`"
+    local readonly GIT_NEW_WAITS="`echo "${GIT_STATUS}" | grep '^??' | wc -l`"
 
-    local stat=${BRANCH_NAME_COLOR}${bName}
-    if [ ${gAddNum} -gt 0 ]; then
-      stat=${stat}${ADD_STATUS_COLOR}' +:'${gAddNum}
+    local stat=${BRANCH_NAME_COLOR}${BRANCH_NAME}
+    if [ ${GIT_ADD_WAITS} -gt 0 ]; then
+      stat=${stat}${ADD_STATUS_COLOR}' +:'${GIT_ADD_WAITS}
     fi
-    if [ ${gDelNum} -gt 0 ]; then
-      stat=${stat}${DEL_STATUS_COLOR}' -:'${gDelNum}
+    if [ ${GIT_DEL_WAITS} -gt 0 ]; then
+      stat=${stat}${DEL_STATUS_COLOR}' -:'${GIT_DEL_WAITS}
     fi
-    if [ ${gComNum} -gt 0 ]; then
-      stat=${stat}${COM_STATUS_COLOR}' *:'${gComNum}
+    if [ ${GIT_COM_WAITS} -gt 0 ]; then
+      stat=${stat}${COM_STATUS_COLOR}' *:'${GIT_COM_WAITS}
     fi
-    if [ ${gNewNum} -gt 0 ]; then
-      stat=${stat}${NEW_STATUS_COLOR}' !:'${gNewNum}
+    if [ ${GIT_NEW_WAITS} -gt 0 ]; then
+      stat=${stat}${NEW_STATUS_COLOR}' !:'${GIT_NEW_WAITS}
     fi
     stat=${stat}${RESET}
 
