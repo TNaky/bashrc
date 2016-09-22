@@ -24,7 +24,7 @@ function git_status() {
     local readonly GIT_NEW_WAITS="`echo "${GIT_STATUS}" | grep '^??' | wc -l`"
 
     local stat=${BRANCH_NAME_COLOR}
-    [ "${BRANCH_NAME}" = '' ] && stat=${stat}${BRANCH_NAME} || stat=${stat}'master'
+    [ "${BRANCH_NAME}" = "" ] && stat=${stat}'master' || stat=${stat}${BRANCH_NAME}
     if [ ${GIT_ADD_WAITS} -gt 0 ]; then
       stat=${stat}${ADD_STATUS_COLOR}' +:'${GIT_ADD_WAITS}
     fi
