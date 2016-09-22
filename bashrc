@@ -10,11 +10,11 @@ function git_status() {
   if [ "${bName}" = "" ]; then
     echo ''
   else
-    local DEL_STATUS_COLOR='\033[01;31m'
-    local COM_STATUS_COLOR='\033[01;32m'
-    local ADD_STATUS_COLOR='\033[01;33m'
-    local NEW_STATUS_COLOR='\033[01;35m'
-    local RESET='\033[00m'
+    local readonly DEL_STATUS_COLOR='\033[01;31m'
+    local readonly COM_STATUS_COLOR='\033[01;32m'
+    local readonly ADD_STATUS_COLOR='\033[01;33m'
+    local readonly NEW_STATUS_COLOR='\033[01;35m'
+    local readonly RESET='\033[00m'
     local readonly git_stat=`git status --porcelain 2> /dev/null`
     local gAddNum="`echo "${git_stat}" | grep '^[AD ]M' | wc -l`"
     local gDelNum="`echo "${git_stat}" | grep '^[MA ]D' | wc -l`"
@@ -38,6 +38,26 @@ function git_status() {
 
     echo -e ' ('${stat}')'
   fi
+}
+
+# put prompt message
+function prompt() {
+  local readonly USER_COLOR='\033[00;35m'
+  local readonly HOST_COLOR='\033[00;33m'
+  local readonly PWD_COLOR='\033[00;32m'
+  local readonly GIT_COLOR='\033[00;36m'
+  local readonly RESET='\033[00m'
+
+  local ps=''
+  ps=${ps}${USER_COLOR}"\u"
+  ps=${ps}${RESET}" at "
+  ps=${ps}${HOST_COLOR}"\h"
+  ps=${ps}${RESET}" in "
+  ps=${ps}${PWD_COLOR}"\w"
+  ps=${ps}${RESET}'$(git_status)'
+  ps=${ps}${RESET}
+
+  echo -e ${ps}
 }
 
 # If not running interactively, don't do anything
@@ -94,22 +114,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-  USER_COLOR='\[\033[00;35m\]'
-  HOST_COLOR='\[\033[00;33m\]'
-  PWD_COLOR='\[\033[00;32m\]'
-  GIT_COLOR='\[\033[00;36m\]'
-  RESET_COLOR='\[\033[00m\]'
-
-  ps=''
-  ps=${ps}'\n${debian_chroot:+($debian_chroot)}[\t] '
-  ps=${ps}"${USER_COLOR}"'\u'
-  ps=${ps}"${RESET_COLOR}"' at '
-  ps=${ps}"${HOST_COLOR}"'\h'
-  ps=${ps}"${RESET_COLOR}"' in '
-  ps=${ps}"${PWD_COLOR}"'\w'
-  ps=${ps}"${RESET_COLOR}"'$(git_status)'
-  ps=${ps}"${RESET_COLOR}"
-  export PS1=${ps}'\n\$ '
+  export PS1="\n${debian_chroot:+($debian_chroot)}[\t] $(prompt)\n\$ "
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
