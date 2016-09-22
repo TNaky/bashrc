@@ -15,10 +15,11 @@ function git_status() {
     local ADD_STATUS_COLOR='\033[01;33m'
     local NEW_STATUS_COLOR='\033[01;35m'
     local RESET='\033[00m'
-    local gAddNum="`git status --porcelain 2> /dev/null | grep '^[AD ]M' | wc -l`"
-    local gDelNum="`git status --porcelain 2> /dev/null | grep '^[MA ]D' | wc -l`"
-    local gComNum="`git status --porcelain 2> /dev/null | grep '^[MAD]' | wc -l`"
-    local gNewNum="`git status --porcelain 2> /dev/null | grep '^??' | wc -l`"
+    local readonly git_stat=`git status --porcelain 2> /dev/null`
+    local gAddNum="`echo "${git_stat}" | grep '^[AD ]M' | wc -l`"
+    local gDelNum="`echo "${git_stat}" | grep '^[MA ]D' | wc -l`"
+    local gComNum="`echo "${git_stat}" | grep '^[MAD]' | wc -l`"
+    local gNewNum="`echo "${git_stat}" | grep '^??' | wc -l`"
 
     local stat=${BRANCH_NAME_COLOR}${bName}
     if [ ${gAddNum} -gt 0 ]; then
