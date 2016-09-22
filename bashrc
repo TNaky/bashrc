@@ -5,23 +5,26 @@
 # Show the git status
 function git_status() {
 
-  local readonly BRANCH_NAME_COLOR='\033[00;36m'
-  local readonly BRANCH_NAME=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-  if [ "${BRANCH_NAME}" = "" ]; then
+  if [ ! -e './.git' ]; then
     echo ''
   else
+    # Colors
+    local readonly BRANCH_NAME_COLOR='\033[00;36m'
     local readonly ADD_STATUS_COLOR='\033[01;33m'
     local readonly DEL_STATUS_COLOR='\033[01;31m'
     local readonly COM_STATUS_COLOR='\033[01;32m'
     local readonly NEW_STATUS_COLOR='\033[01;35m'
     local readonly RESET='\033[00m'
+    # Git information
+    local readonly BRANCH_NAME=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
     local readonly GIT_STATUS=`git status --porcelain 2> /dev/null`
     local readonly GIT_ADD_WAITS="`echo "${GIT_STATUS}" | grep '^[AD ]M' | wc -l`"
     local readonly GIT_DEL_WAITS="`echo "${GIT_STATUS}" | grep '^[MA ]D' | wc -l`"
     local readonly GIT_COM_WAITS="`echo "${GIT_STATUS}" | grep '^[MAD]' | wc -l`"
     local readonly GIT_NEW_WAITS="`echo "${GIT_STATUS}" | grep '^??' | wc -l`"
 
-    local stat=${BRANCH_NAME_COLOR}${BRANCH_NAME}
+    local stat=${BRANCH_NAME_COLOR}
+    [ "${BRANCH_NAME}" = '' ] && stat=${stat}${BRANCH_NAME} || stat=${stat}'master'
     if [ ${GIT_ADD_WAITS} -gt 0 ]; then
       stat=${stat}${ADD_STATUS_COLOR}' +:'${GIT_ADD_WAITS}
     fi
@@ -42,6 +45,7 @@ function git_status() {
 
 # put prompt message
 function prompt() {
+  # Colors
   local readonly USER_COLOR='\033[00;35m'
   local readonly HOST_COLOR='\033[00;33m'
   local readonly PWD_COLOR='\033[00;32m'
