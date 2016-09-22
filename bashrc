@@ -5,9 +5,7 @@
 # Show the git status
 function git_status() {
 
-  if [ ! -e './.git' ]; then
-    echo ''
-  elif type git > /dev/null 2>&1 ; then
+  if [ -e './.git' ] && type git > /dev/null 2>&1 ; then
     # Colors
     local readonly BRANCH_NAME_COLOR='\033[00;36m'
     local readonly ADD_STATUS_COLOR='\033[01;33m'
@@ -40,6 +38,8 @@ function git_status() {
     stat=${stat}${RESET}
 
     echo -e ' ('${stat}')'
+  else
+    echo ''
   fi
 }
 
