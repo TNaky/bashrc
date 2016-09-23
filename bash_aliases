@@ -8,10 +8,8 @@ fi
 
 cd() {
   if [ $# -gt 0 ]; then
-    current=(`pwd | tr -s '/' ' '`)
-    current=${current[((${#current[@]}-1))]}
-    destination=(`echo "$1" | tr -s '/' ' '`)
-    destination=${destination[((${#destination[@]}-1))]}
+    current=`pwd`
+    destination=$(get_path $1)
     if [ "${current}" != "${destination}" ] || [[ `echo $1` =~ ^\+[0-9]+$ ]]; then
       pushd $1 > /dev/null
     fi
