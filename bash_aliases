@@ -6,6 +6,10 @@ if [ "$(uname)" == 'Darwin' ]; then
   alias l='ls -CFG'
 fi
 
+if type tig > /dev/null 2>&1 ; then
+  alias tig='tig status'
+fi
+
 cd() {
   if [ $# -gt 0 ]; then
     current=`pwd`
