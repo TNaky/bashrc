@@ -2,10 +2,40 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# Get full path
+function get_path() {
+  f=$@
+  if [ -d "${f}" ]; then
+    base=""
+    dir="${f}"
+  else
+    base="/$(basename "${f}")"
+    dir=$(dirname "${f}")
+  fi
+  dir=$(builtin cd "${dir}" && /bin/pwd)
+  echo "${dir}${base}"
+}
+
+# Is git repository
+function is_repository() {
+  local result=false
+  local readonly dirorg=`pwd`
+  while [ `pwd` != '/' ] ; do
+    if [ -e './.git' ]; then
+      result=true
+      break
+    else
+      builtin cd ../
+    fi
+  done
+  builtin cd ${dirorg}
+  echo ${result}
+}
+
 # Show the git status
 function git_status() {
 
-  if [ -e './.git' ] && type git > /dev/null 2>&1 ; then
+  if $(is_repository) && type git > /dev/null 2>&1 ; then
     # Colors
     local readonly BRANCH_NAME_COLOR='\033[00;36m'
     local readonly ADD_STATUS_COLOR='\033[01;33m'
