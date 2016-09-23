@@ -26,14 +26,14 @@ function git_status() {
     if [ ${GIT_ADD_WAITS} -gt 0 ]; then
       stat=${stat}${ADD_STATUS_COLOR}' +:'${GIT_ADD_WAITS}
     fi
-    if [ ${GIT_DEL_WAITS} -gt 0 ]; then
-      stat=${stat}${DEL_STATUS_COLOR}' -:'${GIT_DEL_WAITS}
-    fi
     if [ ${GIT_COM_WAITS} -gt 0 ]; then
       stat=${stat}${COM_STATUS_COLOR}' *:'${GIT_COM_WAITS}
     fi
     if [ ${GIT_NEW_WAITS} -gt 0 ]; then
       stat=${stat}${NEW_STATUS_COLOR}' !:'${GIT_NEW_WAITS}
+    fi
+    if [ ${GIT_DEL_WAITS} -gt 0 ]; then
+      stat=${stat}${DEL_STATUS_COLOR}' -:'${GIT_DEL_WAITS}
     fi
     stat=${stat}${RESET}
 
