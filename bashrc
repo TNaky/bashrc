@@ -197,7 +197,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 else
-  echo "#! /bin/bash\n" > ~/.bashrc/bash_aliases
   ln -s ~/.bash/bash_aliases ~/.bash_aliases
   . ~/.bash_aliases
 fi
