@@ -48,7 +48,7 @@ function git_status() {
     local readonly GIT_STATUS=`git status --porcelain 2> /dev/null`
     local readonly GIT_ADD_WAITS="`echo "${GIT_STATUS}" | grep '^[AD ]M' | wc -l`"
     local readonly GIT_DEL_WAITS="`echo "${GIT_STATUS}" | grep '^[MA ]D' | wc -l`"
-    local readonly GIT_COM_WAITS="`echo "${GIT_STATUS}" | grep '^[MAD]' | wc -l`"
+    local readonly GIT_COM_WAITS="`echo "${GIT_STATUS}" | grep '^[MADR]' | wc -l`"
     local readonly GIT_NEW_WAITS="`echo "${GIT_STATUS}" | grep '^??' | wc -l`"
 
     local stat=${BRANCH_NAME_COLOR}
