@@ -220,6 +220,11 @@ else
   ln -s ~/.bash/inputrc ~/.inputrc
 fi
 
+# Default editor
+export EDITOR=vim
+# Locale
+export LANG=ja_JP.UTF-8
+
 # Start tmux
 if [[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]]; then
   if $(tmux has-session 2> /dev/null); then
