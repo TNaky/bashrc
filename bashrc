@@ -214,3 +214,12 @@ if ! shopt -oq posix; then
     . $(brew --prefix)/etc/bash_completion
   fi
 fi
+
+# Start tmux
+if [[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]]; then
+  if $(tmux has-session 2> /dev/null); then
+    tmux attach -d
+  else
+    tmux
+  fi
+fi
