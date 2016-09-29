@@ -196,8 +196,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 else
-  ln -s ~/.bash/bash_aliases ~/.bash_aliases
-  . ~/.bash_aliases
+  . ~.bash/bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -217,7 +216,7 @@ fi
 if [ -f ~/.inputrc ]; then
   . ~/.inputrc
 else
-  ln -s ~/.bash/inputrc ~/.inputrc
+  . ~/.bash/inputrc
 fi
 
 # Default editor
