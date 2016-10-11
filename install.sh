@@ -1,4 +1,11 @@
 #!/bin/bash
+if [ "$(uname)" == "Darwin" ]; then
+  echo "Please use bash and git of brew"
+  echo -e '  \033[00;33m'brew install bash git'\033[00m'
+  echo "How to install Homebrew"
+  echo -e '  \033[00;34m'http://brew.sh/index_ja.html'\033[00m'
+fi
+
 git clone https://github.com/TNaky/bashrc.git ${HOME}/.bash
 if [ -f "${HOME}/.bashrc" ]; then
   mv ${HOME}/.bashrc ${HOME}/.bash/bashrc.orig
