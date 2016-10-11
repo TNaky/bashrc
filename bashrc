@@ -215,8 +215,7 @@ fi
 # inputrc
 if [ -f ~/.inputrc ]; then
   . ~/.inputrc
-# elif [ -f ~/.bash/inputrc ]; then
-else
+elif [ -f ~/.bash/inputrc ]; then
   . ~/.bash/inputrc
 fi
 
