@@ -17,3 +17,12 @@ if [ -f "${HOME}/.bash_profile" ]; then
 else
   ln -s ${HOME}/.bash/bash_profile ${HOME}/.bash_profile
 fi
+
+if [ -f "${HOME}/.inputrc " ]; then
+  mv ${HOME}/.inputrc ${HOME}/.bash/inputrc.orig
+  ln -s ${HOME}/.bash/inputrc ${HOME}/.inputrc
+  echo "Original .inputrc file has been moved to"
+  echo -e '  \033[01;33m'\"${HOME}/.bash/inputrc.orig\"'\033[00m'
+else
+  ln -s ${HOME}/.bash/inputrc ${HOME}/.inputrc
+fi
