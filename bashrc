@@ -148,7 +148,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-  export PS1="\n${debian_chroot:+($debian_chroot)}[\t] $(prompt)\n\$ "
+  PS1="\n${debian_chroot:+($debian_chroot)}[\t] $(prompt)\n \$ "
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
