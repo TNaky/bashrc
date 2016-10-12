@@ -10,5 +10,5 @@ set visible-stats on
 set editing-mode vi
 set keymap vi-command
 set show-mode-in-prompt on
-set vi-ins-mode-string "- \1\033[34m\2ins\1\033[0m\2 -"
-set vi-cmd-mode-string "- \1\033[32m\2cmd\1\033[0m\2 -"
+set vi-ins-mode-string "- \1\033[34m\2INS\1\033[0m\2 -"
+set vi-cmd-mode-string "- \1\033[32m\2CMD\1\033[0m\2 -"
