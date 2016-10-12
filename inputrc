@@ -7,3 +7,4 @@ set mark-symlinked-directories on
 set menu-complete-display-prefix off
 set skip-completed-text on
 set visible-stats on
+set editing-mode vi
