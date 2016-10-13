@@ -6,7 +6,12 @@ if [ "$(uname)" == "Darwin" ]; then
   echo -e '  \033[00;34m'http://brew.sh/index_ja.html'\033[00m'
 fi
 
-git clone https://github.com/TNaky/bashrc.git ${HOME}/.bash
+if [ -d ${HOME} ]; then
+  git -C ${HOME}/.bash/.git pull
+else
+  git clone https://github.com/TNaky/bashrc.git ${HOME}/.bash
+fi
+
 if [ -f "${HOME}/.bashrc" ]; then
   mv ${HOME}/.bashrc ${HOME}/.bash/bashrc.orig
   ln -s ${HOME}/.bash/bashrc ${HOME}/.bashrc
