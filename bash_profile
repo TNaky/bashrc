@@ -1,8 +1,7 @@
-if [ -f ~/.bash/checkUpdate.sh ]; then
-  bash ~/.bash/checkUpdate.sh
-fi
-if [ -f ~/.bashrc ] ; then
-  . ~/.bashrc
-elif [ -f ~/.bash/bashrc ]; then
-  . ~/.bash/bashrc
+if [ -n "${BASH_VERSION}" ]; then
+  if [ -f "${HOME}/.bashrc" ] ; then
+    . "${HOME}/.bashrc"
+  elif [ -f "${HOME}/.bash/bashrc" ]; then
+    . "${HOME}/.bash/bashrc"
+  fi
 fi
