@@ -51,7 +51,7 @@ if [[ $(type git 2> /dev/null) ]]; then
     ln -s ${HOME}/.bash/inputrc ${HOME}/.inputrc
   fi
 else
-  echo "Please git install"
-  echo -e '  \033[00;33m'brew install git'\033[00m'
-  echo -e '  \033[00;33m'sudo aptitude install git'\033[00m'
+  echo -e '\033[00;31m'"Git is not installed.\nPlease git install"'\033[00m'
+  echo -e "  MacOSX: "'\033[00;33m'"brew install git"'\033[00m'
+  echo -e "  Ubuntu: "'\033[00;33m'"sudo aptitude install git"'\033[00m'
 fi
