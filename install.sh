@@ -7,7 +7,7 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 
 if [[ $(type git 2> /dev/null) ]]; then
-  if [ -d ${HOME} ]; then
+  if [ -d "${HOME}/.bash" ]; then
     git -C ${HOME}/.bash/.git pull
   else
     git clone https://github.com/TNaky/bashrc.git ${HOME}/.bash
