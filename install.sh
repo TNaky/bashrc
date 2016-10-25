@@ -22,13 +22,24 @@ if [[ $(type git 2> /dev/null) ]]; then
     ln -s ${HOME}/.bash/bashrc ${HOME}/.bashrc
   fi
   
-  if [ -f "${HOME}/.bash_profile" ]; then
-    mv ${HOME}/.bash_profile ${HOME}/.bash/bash_profile.orig
-    ln -s ${HOME}/.bash/bash_profile ${HOME}/.bash_profile
-    echo "Original .bash_profile file has been moved to"
-    echo -e '  \033[01;33m'\"${HOME}/.bash/bash_profile.orig\"'\033[00m'
-  else
-    ln -s ${HOME}/.bash/bash_profile ${HOME}/.bash_profile
+  if [ "$(uname)" == "Darwin" ]; then
+    if [ -f "${HOME}/.bash_profile" ]; then
+      mv ${HOME}/.bash_profile ${HOME}/.bash/bash_profile.orig
+      ln -s ${HOME}/.bash/bash_profile ${HOME}/.bash_profile
+      echo "Original .bash_profile file has been moved to"
+      echo -e '  \033[01;33m'\"${HOME}/.bash/bash_profile.orig\"'\033[00m'
+    else
+      ln -s ${HOME}/.bash/bash_profile ${HOME}/.bash_profile
+    fi
+  elif [ "$(uname)" == "Linux" ]; then
+    if [ -f "${HOME}/.profile" ]; then
+      mv "${HOME}/.profile" "${HOME}/.bash/profile.orig"
+      ln -s "${HOME}/.bash/bash_profile" "${HOME}/.profile"
+      echo "Original .profile file has been moved to"
+      echo -e '  \033[01;33m'\"${HOME}/.bash/profile.orig\"'\033[00m'
+    else
+      ln -s "${HOME}/.bash/bash_profile" "${HOME}/.profile"
+    fi
   fi
   
   if [ -f "${HOME}/.inputrc " ]; then
