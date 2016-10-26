@@ -225,10 +225,12 @@ export EDITOR=vim
 export LANG=ja_JP.UTF-8
 
 # Start tmux
-if [[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]] && `who | awk '{print $2;}' | grep tty > /dev/null 2>&1` ; then
-  if $(tmux has-session 2> /dev/null); then
-    tmux attach -d
-  else
-    tmux
+if [[ $(type tmux 2> /dev/null) ]]; then
+  if [[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]] && `who | awk '{print $2;}' | grep tty > /dev/null 2>&1` ; then
+    if $(tmux has-session 2> /dev/null); then
+      tmux attach -d
+    else
+      tmux
+    fi
   fi
 fi
