@@ -234,3 +234,6 @@ if [[ $(type tmux 2> /dev/null) ]]; then
     fi
   fi
 fi
+
+# nvim conf
+export XDG_CONFIG_HOME=$HOME/.config
