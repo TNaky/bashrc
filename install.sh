@@ -42,13 +42,22 @@ if [[ $(type git 2> /dev/null) ]]; then
     fi
   fi
   
-  if [ -f "${HOME}/.inputrc " ]; then
+  if [ -f "${HOME}/.inputrc" ]; then
     mv ${HOME}/.inputrc ${HOME}/.bash/inputrc.orig
     ln -s ${HOME}/.bash/inputrc ${HOME}/.inputrc
     echo "Original .inputrc file has been moved to"
     echo -e '  \033[01;33m'\"${HOME}/.bash/inputrc.orig\"'\033[00m'
   else
     ln -s ${HOME}/.bash/inputrc ${HOME}/.inputrc
+  fi
+
+  if [ -f "${HOME}/.dircolors" ]; then
+    mv ${HOME}/.dircolors ${HOME}/.bash/dircolors.orig
+    ln -s ${HOME}/.bash/dircolors ${HOME}/.dircolors
+    echo "Original .dircolors file has been moved to"
+    echo -e '  \033[01;33m'\"${HOME}/.bash/dircolors.orig\"'\033[00m'
+  else
+    ln -s ${HOME}/.bash/dircolors ${HOME}/.dircolors
   fi
 else
   echo -e '\033[00;31m'"Git is not installed.\nPlease git install"'\033[00m'
