@@ -1,9 +1,9 @@
 #! /bin/bash
 if [ "$(uname)" == 'Darwin' ]; then
-  alias ls='ls -G'
-  alias ll='ls -alFG'
-  alias la='ls -AG'
-  alias l='ls -CFG'
+  alias ls='ls -hG'
+  alias ll='ls -alhFG'
+  alias la='ls -hAG'
+  alias l='ls -hCFG'
 fi
 
 if type tig > /dev/null 2>&1 ; then

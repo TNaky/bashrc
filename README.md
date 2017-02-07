@@ -18,3 +18,4 @@ git clone https://github.com/TNaky/bashrc.git ${HOME}/.bash
 ln -s .bash/bashrc ${HOME}/.bashrc
 ln -s ${HOME}/.bash/bash_profile ${HOME}/.bash_profile
 ln -s ${HOME}/.bash/inputrc ${HOME}/.inputrc
+ln -s ${HOME}/.bash/dircolors ${HOME}/.dircolors
