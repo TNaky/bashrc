@@ -10,17 +10,17 @@ function get_path() {
     dir="${f}"
   else
     base="/$(basename "${f}")"
-    dir=$(dirname "${f}")
+    dir="$(dirname "${f}")"
   fi
-  dir=$(builtin cd "${dir}" && /bin/pwd)
+  dir="$(builtin cd "${dir}" && /bin/pwd)"
   echo "${dir}${base}"
 }
 
 # Is git repository
 function is_repository() {
   local result=false
-  local readonly dirorg=`pwd`
-  while [ `pwd` != '/' ] ; do
+  local readonly dirorg="`pwd`"
+  while [ "`pwd`" != '/' ] ; do
     if [ -e './.git' ]; then
       result=true
       break
@@ -28,7 +28,7 @@ function is_repository() {
       builtin cd ../
     fi
   done
-  builtin cd ${dirorg}
+  builtin cd "${dirorg}"
   echo ${result}
 }
 

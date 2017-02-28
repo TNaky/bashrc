@@ -13,12 +13,12 @@ fi
 
 cd() {
   if [ $# -gt 0 ]; then
-    current=`pwd`
-    destination=$(get_path $1)
-    if [ "${current}" != "${destination}" ] || [[ `echo $1` =~ ^\+[0-9]+$ ]]; then
+    current="`pwd`"
+    destination="$(get_path $1)"
+    if [ "${current}" != "${destination}" ] || [[ "`echo $1`" =~ ^\+[0-9]+$ ]]; then
       pushd "$1" > /dev/null 2>&1
     fi
-  elif [ `pwd` != "${HOME}" ]; then
+  elif [ "`pwd`" != "${HOME}" ]; then
     pushd "${HOME}" > /dev/null 2>&1
   fi
 }
