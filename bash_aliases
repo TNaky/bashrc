@@ -1,4 +1,5 @@
 #! /bin/bash
+
 if [ "$(uname)" == 'Darwin' ]; then
   alias ls='ls -hG'
   alias ll='ls -alhFG'
@@ -15,10 +16,10 @@ cd() {
     current=`pwd`
     destination=$(get_path $1)
     if [ "${current}" != "${destination}" ] || [[ `echo $1` =~ ^\+[0-9]+$ ]]; then
-      pushd $1 > /dev/null
+      pushd "$1" > /dev/null 2>&1
     fi
   elif [ `pwd` != "${HOME}" ]; then
-    pushd "${HOME}" > /dev/null
+    pushd "${HOME}" > /dev/null 2>&1
   fi
 }
 
