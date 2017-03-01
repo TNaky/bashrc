@@ -1,5 +1,7 @@
 #! /bin/bash
 
+alias dirs='dirs -v'
+
 if [ "$(uname)" == 'Darwin' ]; then
   alias ls='ls -hG'
   alias ll='ls -alhFG'
@@ -11,10 +13,23 @@ if type tig > /dev/null 2>&1 ; then
   alias tig='tig status'
 fi
 
+get_dirs() {
+  local dirsList="$(builtin dirs -p -l)"
+  [ $# -gt 0 ] && local destination="$(get_path $1)" || local destination="${HOME}"
+  local num=$(echo "${dirsList}" | grep -x -n "${destination}" | sed -e 's/:.*//g')
+  if [ "${num}" != "" ]; then
+    local num=$(expr ${num} - 1)
+    echo ${num}
+  fi
+}
+
 cd() {
-  if [ $# -gt 0 ]; then
-    current="`pwd`"
-    destination="$(get_path $1)"
+  local num=$(get_dirs $1)
+  if [ "${num}" != "" ]; then
+    pushd "+${num}" > /dev/null 2>&1
+  elif [ $# -gt 0 ]; then
+    local current="`pwd`"
+    local destination="$(get_path $1)"
     if [ "${current}" != "${destination}" ] || [[ "`echo $1`" =~ ^\+[0-9]+$ ]]; then
       pushd "$1" > /dev/null 2>&1
     fi
@@ -22,5 +37,3 @@ cd() {
     pushd "${HOME}" > /dev/null 2>&1
   fi
 }
-
-alias dirs='dirs -v'
