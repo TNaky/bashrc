@@ -26,14 +26,10 @@ get_dirs() {
 cd() {
   local num=$(get_dirs $1)
   if [ "${num}" != "" ]; then
-    pushd "+${num}" > /dev/null 2>&1
+    pushd "+${num}" > /dev/null
   elif [ $# -gt 0 ]; then
-    local current="`pwd`"
-    local destination="$(get_path $1)"
-    if [ "${current}" != "${destination}" ] || [[ "`echo $1`" =~ ^\+[0-9]+$ ]]; then
-      pushd "$1" > /dev/null 2>&1
-    fi
-  elif [ "`pwd`" != "${HOME}" ]; then
-    pushd "${HOME}" > /dev/null 2>&1
+    pushd "$1" > /dev/null
+  else
+    pushd "${HOME}" > /dev/null
   fi
 }
