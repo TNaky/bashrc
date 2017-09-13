@@ -2,6 +2,28 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+function show_log() {
+  hmss="    -t <file> 指定のログを表示します
+    -l        ログをリスト表示します"
+  case ${1} in
+    "-h") echo "${hmss}" ;;
+    "-l") ls -al ${HOME}/.bash/log/ ;;
+    "-t") less ${HOME}/.bash/log/${2} ;;
+    *) echo "${hmss}" ;;
+  esac
+}
+
+function put_log() {
+  day=$(date +"%Y%m%d")
+  log=${HOME}/.bash/log/${day}.log
+  if [ ! -f ${log} ]; then
+    touch ${log}
+  fi
+  for mss in "$@"; do
+    echo $(date  +"[%Y.%m.%d %H:%M:%S] ")${mss} >> ${log}
+  done
+}
+
 # Get full path
 function get_path() {
   f=$@
